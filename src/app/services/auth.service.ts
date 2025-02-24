@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SocialAuthService, SocialUser, GoogleLoginProvider, FacebookLoginProvider } from '@abacritt/angularx-social-login';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { ConfigEnum } from '../Enum/config.enum';
 import { AuthResponse } from '../interface/auth.interface';
 import { environment } from '../../environments/environment.prod';
@@ -33,7 +33,6 @@ export class AuthService {
       }).catch(error => observer.error(error));
     });
   }
-  
 
 
   public facebookLogin(): Observable<AuthResponse> {

@@ -14,10 +14,14 @@ import { ConfigEnum } from '../../Enum/config.enum';
 export class LoginComponent {
   constructor(private authService: AuthService,public router:Router) {}
 
-  public loginWithGoogle():void {
-    this.authService.googleLogin().subscribe(response => {
-      if(response){
+  public loginWithGoogle(): void {
+    this.authService.googleLogin().subscribe({
+      next: (response) => {
+        localStorage.setItem(ConfigEnum.JWT, response.accessToken);
         this.routeToDashboard();
+      },
+      error: (err) => {
+        console.error('Google login failed', err);
       }
     });
   }
