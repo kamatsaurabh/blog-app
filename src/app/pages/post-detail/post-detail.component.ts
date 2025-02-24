@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../../services/post.service';
+import { Post } from '../../interface/posts.interface';
+import { ConfigEnum } from '../../Enum/config.enum';
 
 @Component({
   selector: 'app-post-detail',
@@ -11,7 +13,7 @@ import { PostService } from '../../services/post.service';
   styleUrl: './post-detail.component.scss'
 })
 export class PostDetailComponent {
-  post: any;
+  public post!: Post;
 
   constructor(
     private route: ActivatedRoute, 
@@ -19,7 +21,7 @@ export class PostDetailComponent {
     private router: Router) {}
 
   backToDashboard() {
-    this.router.navigate(['/dashboard']); // ✅ Navigate to dashboard
+    this.router.navigate([ConfigEnum.Dashboard]);
   }
 
   ngOnInit() {

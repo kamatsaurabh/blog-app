@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { SocialAuthService, SocialUser, GoogleLoginProvider, FacebookLoginProvider } from '@abacritt/angularx-social-login';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ConfigEnum } from '../Enum/config.enum';
+import { environment } from '../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:3000/auth';
+  private baseUrl = `${environment.Url}${ConfigEnum.Auth}`;
   private user: SocialUser | null = null;
 
   constructor(private authService: SocialAuthService, private http: HttpClient) {
@@ -16,34 +18,34 @@ export class AuthService {
     });
   }
 
-  googleLogin(): Observable<any> {
+  public googleLogin(): Observable<any> {
     return new Observable(observer => {
       this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(user => {
-        this.http.post(`${this.baseUrl}/google-login`, { token: user.idToken }).subscribe((response:any) => {
-          localStorage.setItem('jwt', response['accessToken']);
+        this.http.post(`${this.baseUrl}${ConfigEnum.GoogleLogin}`, { token: user.idToken }).subscribe((response:any) => {
+          localStorage.setItem(ConfigEnum.JWT, response[ConfigEnum.AccessToken]);
           observer.next(response);
         });
       });
     });
   }
 
-  facebookLogin(): Observable<any> {
+  public facebookLogin(): Observable<any> {
     return new Observable(observer => {
       this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(user => {
-        this.http.post(`${this.baseUrl}/facebook-login`, { token: user.authToken }).subscribe((response:any) => {
-          localStorage.setItem('jwt', response['accessToken']);
+        this.http.post(`${this.baseUrl}${ConfigEnum.FacebookLogin}`, { token: user.authToken }).subscribe((response:any) => {
+          localStorage.setItem(ConfigEnum.JWT, response[ConfigEnum.AccessToken]);
           observer.next(response);
         });
       });
     });
   }
 
-  logout(): void {
+  public logout(): void {
     this.authService.signOut();
-    localStorage.removeItem('jwt');
+    localStorage.removeItem(ConfigEnum.JWT);
   }
 
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('jwt');
+  public isAuthenticated(): boolean {
+    return !!localStorage.getItem(ConfigEnum.JWT);
   }
 }

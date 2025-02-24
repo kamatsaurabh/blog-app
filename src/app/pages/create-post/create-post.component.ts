@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { PostService } from '../../services/post.service';
+import { ConfigEnum } from '../../Enum/config.enum';
 @Component({
   selector: 'app-create-post',
   standalone: true,
@@ -28,9 +29,8 @@ export class CreatePostComponent {
     });
   }
 
-  submitPost() {
+  public submitPost():void {
     if (this.postForm.valid) {
-      console.log('this.postForm.value',this.postForm.value);
       const postData = this.postForm.value;
 
       this.postService.createPost(this.postForm.value.title, this.postForm.value.body).subscribe((res:any) => {
@@ -38,14 +38,14 @@ export class CreatePostComponent {
           alert('Post created successfully!');
           this.postForm.reset();
           setTimeout(()=>{
-            this.router.navigate(['/dashboard']);
+            this.backToDashboard();
           },2000)
         }     
       });
     }
   }
 
-  backToDashboard() {
-    this.router.navigate(['/dashboard']); // ✅ Navigate to dashboard
+  public backToDashboard():void {
+    this.router.navigate([ConfigEnum.Dashboard]); // ✅ Navigate to dashboard
   }
 }

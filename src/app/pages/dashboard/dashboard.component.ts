@@ -3,6 +3,8 @@ import { PostService } from '../../services/post.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { Post } from '../../interface/posts.interface';
+import { ConfigEnum } from '../../Enum/config.enum';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,40 +14,41 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  posts: any[] = [];
+  public posts: Post[] = [];
 
   constructor(
     private postService: PostService,
     public router:Router,
-    private authService: AuthService) {}
+    private authService: AuthService
+  ) {}
 
   ngOnInit():void {
     this.loadPosts();
   }
 
-  loadPosts() {
+  public loadPosts():void {
     this.postService.getAllPosts().subscribe((data) => {
       this.posts = data;
     });
   }
 
-  deletePost(id: number) {
+  public deletePost(id: number):void {
     this.postService.deletePost(id).subscribe(() => {
       this.posts = this.posts.filter(post => post.id !== id);
     });
   }
 
-  viewPostDetails(postId: number) {
-    this.router.navigate(['/post', postId]);
+  public viewPostDetails(postId: number):void {
+    this.router.navigate([ConfigEnum.Post, postId]);
   }
 
-  routeTocreatePosts() {
-    this.router.navigate(['/create-post']); 
+  public routeTocreatePosts():void {
+    this.router.navigate([ConfigEnum.CreatePost]); 
   }
   
-  logout() {
+  public logout():void{
       this.authService.logout();
-      this.router.navigate(['/login']);
+      this.router.navigate([ConfigEnum.Login]);
   }
 }
 

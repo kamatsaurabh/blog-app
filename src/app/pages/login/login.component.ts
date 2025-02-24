@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { ConfigEnum } from '../../Enum/config.enum';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  constructor(private authService: AuthService,public router:Router) {
-    
-  }
+  constructor(private authService: AuthService,public router:Router) {}
 
   public loginWithGoogle():void {
     this.authService.googleLogin().subscribe(response => {
@@ -32,6 +31,6 @@ export class LoginComponent {
   }
 
   public routeToDashboard():void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate([ConfigEnum.Dashboard]);
   }
 }
