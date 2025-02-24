@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,21 +11,27 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,public router:Router) {
+    
+  }
 
-  loginWithGoogle() {
+  public loginWithGoogle():void {
     this.authService.googleLogin().subscribe(response => {
       if(response){
-        console.log('Facebook login success:', response);
+        this.routeToDashboard();
       }
     });
   }
 
-  loginWithFacebook() {
+  public loginWithFacebook():void {
     this.authService.facebookLogin().subscribe(response => {
       if(response){
-        console.log('Facebook login success:', response);
+        this.routeToDashboard();
       }
     });
+  }
+
+  public routeToDashboard():void {
+    this.router.navigate(['/dashboard']);
   }
 }
