@@ -3,7 +3,8 @@ import { SocialAuthService, SocialUser, GoogleLoginProvider, FacebookLoginProvid
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ConfigEnum } from '../Enum/config.enum';
-import { environment } from '../environments/environment.development';
+import { AuthResponse } from '../interface/auth.interface';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -18,27 +19,38 @@ export class AuthService {
     });
   }
 
-  public googleLogin(): Observable<any> {
-    return new Observable(observer => {
+  public googleLogin(): Observable<AuthResponse> {
+    return new Observable<AuthResponse>(observer => {
       this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(user => {
-        this.http.post(`${this.baseUrl}${ConfigEnum.GoogleLogin}`, { token: user.idToken }).subscribe((response:any) => {
-          localStorage.setItem(ConfigEnum.JWT, response[ConfigEnum.AccessToken]);
-          observer.next(response);
-        });
-      });
+        this.http.post<AuthResponse>(`${this.baseUrl}${ConfigEnum.GoogleLogin}`, { token: user.idToken })
+          .subscribe((response: AuthResponse) => {
+            localStorage.setItem(ConfigEnum.JWT, response.accessToken);
+            observer.next(response);
+            observer.complete();
+          }, error => {
+            observer.error(error);
+          });
+      }).catch(error => observer.error(error));
     });
   }
+  
 
-  public facebookLogin(): Observable<any> {
-    return new Observable(observer => {
+
+  public facebookLogin(): Observable<AuthResponse> {
+    return new Observable<AuthResponse>(observer => {
       this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(user => {
-        this.http.post(`${this.baseUrl}${ConfigEnum.FacebookLogin}`, { token: user.authToken }).subscribe((response:any) => {
-          localStorage.setItem(ConfigEnum.JWT, response[ConfigEnum.AccessToken]);
-          observer.next(response);
-        });
-      });
+        this.http.post<AuthResponse>(`${this.baseUrl}${ConfigEnum.FacebookLogin}`, { token: user.authToken })
+          .subscribe((response: AuthResponse) => {
+            localStorage.setItem(ConfigEnum.JWT, response.accessToken);
+            observer.next(response);
+            observer.complete();
+          }, error => {
+            observer.error(error);
+          });
+      }).catch(error => observer.error(error));
     });
   }
+  
 
   public logout(): void {
     this.authService.signOut();

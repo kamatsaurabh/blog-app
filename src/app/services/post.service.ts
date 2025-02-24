@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../environments/environment.development';
 import { ConfigEnum } from '../Enum/config.enum';
+import { DeletePostResponse, Post } from '../interface/posts.interface';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +13,19 @@ export class PostService {
   
   constructor(private http: HttpClient) {}
 
-  public getAllPosts(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+  public getAllPosts(): Observable<Post[]> {
+    return this.http.get<Post[]>(this.apiUrl);
   }
 
-  public getPostById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  public getPostById(id: number): Observable<Post> {
+    return this.http.get<Post>(`${this.apiUrl}/${id}`);
   }
 
-  public createPost(title: string, content: string): Observable<any> {
-    return this.http.post<any>(this.apiUrl, { title, content });
+  public createPost(title: string, content: string): Observable<Post> {
+    return this.http.post<Post>(this.apiUrl, { title, content });
   }
 
-  public deletePost(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  public deletePost(id: number): Observable<DeletePostResponse> {
+    return this.http.delete<DeletePostResponse>(`${this.apiUrl}/${id}`);
   }
 }

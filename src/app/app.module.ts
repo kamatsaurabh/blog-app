@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
 import { GoogleLoginProvider, FacebookLoginProvider } from '@abacritt/angularx-social-login';
 import { CommonModule } from '@angular/common';
+import { environment } from '../environments/environment';
 
 @NgModule({
   providers: [
@@ -17,11 +18,11 @@ import { CommonModule } from '@angular/common';
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('1052149523397-o5o0nn1gj9m9le52189q68geqo73veoi.apps.googleusercontent.com'),
+            provider: new GoogleLoginProvider(`${environment.GoogleAuthKey}`),
           },
           {
             id: FacebookLoginProvider.PROVIDER_ID,
-            provider: new FacebookLoginProvider('1296177931495483'),
+            provider: new FacebookLoginProvider(`${environment.FacebookAuthKey}`),
           }
         ]
       } as SocialAuthServiceConfig

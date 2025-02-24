@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { PostService } from '../../services/post.service';
 import { ConfigEnum } from '../../Enum/config.enum';
+import { Post } from '../../interface/posts.interface';
 @Component({
   selector: 'app-create-post',
   standalone: true,
@@ -33,7 +34,7 @@ export class CreatePostComponent {
     if (this.postForm.valid) {
       const postData = this.postForm.value;
 
-      this.postService.createPost(this.postForm.value.title, this.postForm.value.body).subscribe((res:any) => {
+      this.postService.createPost(this.postForm.value.title, this.postForm.value.body).subscribe((res:Post) => {
         if(res){
           alert('Post created successfully!');
           this.postForm.reset();
